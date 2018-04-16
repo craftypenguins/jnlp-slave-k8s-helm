@@ -1,9 +1,9 @@
-FROM jenkinsci/jnlp-slave:alpine
+FROM jenkins/jnlp-slave:3.19-1-alpine
 MAINTAINER Kerkhoff Technologies Inc. <linuxsupport@kerkhofftech.ca>
 
-ENV HELM_VERSION v2.7.2
+ENV HELM_VERSION v2.8.2
 ENV HELM_FILENAME helm-${HELM_VERSION}-linux-amd64.tar.gz
-ENV KUBE_LATEST_VERSION="v1.8.4"
+ENV KUBE_LATEST_VERSION="v1.9.6"
 
 USER root
 WORKDIR /
@@ -16,8 +16,9 @@ RUN curl -L https://storage.googleapis.com/kubernetes-release/release/${KUBE_LAT
  && chmod +x /usr/local/bin/kubectl
 
 RUN apk del --purge deps \
- && rm /var/cache/apk/*
+ && rm /var/cache/apk/* 
 
 USER jenkins
 RUN helm init --client-only
+WORKDIR /home/jenkins
 
